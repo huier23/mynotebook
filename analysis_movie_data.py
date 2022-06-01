@@ -1,13 +1,15 @@
 # Databricks notebook source
 from pyspark.sql.functions import split, explode, col, udf
 from pyspark.sql.types import *
-
+from pyspark.sql import SparkSession
 # COMMAND ----------
 
 # Setting storage account connection
 container_name = "datasource"
 storage_account_name = "sghuierdatabricks"
-storage_account_access_key = BLOB_ACCESS_KEY
+# storage_account_access_key = BLOB_ACCESS_KEY
+storage_account_access_key = "f4hfs9ZwA9kfTBnSRsYF+gGJ7V658cOQhcAd830iPfW0VaT5sZr88sOSvqR64fRR+SqCejlhYYy/+ASttrBBTQ=="
+spark = SparkSession.builder.appName('temps-demo-2').getOrCreate()
 spark.conf.set("fs.azure.account.key." + storage_account_name +".blob.core.windows.net",storage_account_access_key)
 
 # COMMAND ----------
@@ -27,13 +29,13 @@ movies = spark.read.format("csv") \
 
 
 # COMMAND ----------
-
-display(ratings)
+# display(ratings)
+ratings.show()
 
 # COMMAND ----------
 
-display(movies)
-
+# display(movies)
+movies.show()
 
 # COMMAND ----------
 
@@ -49,7 +51,8 @@ ratings = ratingsTemp \
 
 # COMMAND ----------
 
-display(ratings)
+# display(ratings)
+ratings.show()
 
 # COMMAND ----------
 
@@ -72,8 +75,8 @@ ratings_denorm = ratings.alias('a').join(movies_denorm.alias('b'), 'movieId', 'i
 # COMMAND ----------
 
 # Show merged data table
-display(ratings_denorm)
+# display(ratings_denorm)
+ratings_denorm.show()
 
 # COMMAND ----------
-
 ratings_denorm.write.saveAsTable('ratings_denorm', format='parquet', mode='overwrite')
