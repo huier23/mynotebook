@@ -2,6 +2,7 @@
 from pyspark.sql.functions import split, explode, col, udf
 from pyspark.sql.types import *
 from pyspark.sql import SparkSession
+
 # COMMAND ----------
 
 # Setting storage account connection
@@ -29,6 +30,7 @@ movies = spark.read.format("csv") \
 
 
 # COMMAND ----------
+
 # display(ratings)
 ratings.show()
 
@@ -75,8 +77,9 @@ ratings_denorm = ratings.alias('a').join(movies_denorm.alias('b'), 'movieId', 'i
 # COMMAND ----------
 
 # Show merged data table
-# display(ratings_denorm)
+display(ratings_denorm)
 ratings_denorm.show()
 
 # COMMAND ----------
-ratings_denorm.write.saveAsTable('ratings_denorm', format='parquet', mode='overwrite')
+
+# ratings_denorm.write.saveAsTable('ratings_denorm', format='parquet', mode='overwrite')
